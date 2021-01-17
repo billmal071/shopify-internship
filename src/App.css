@@ -1,38 +1,44 @@
-.App {
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html:focus-within {
+    scroll-behavior: smooth;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@media(prefers-reduced-motion) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.card-1 {
+    @apply text-black p-5 shadow-lg flex flex-col overflow-auto break-words rounded-md;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,0.7710434515603116) 100%, rgba(0,212,255,1) 100%);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.card-2 {
+    @apply bg-blue-50 text-black shadow-lg flex overflow-auto break-words rounded-md;
 }
 
-.App-link {
-  color: #61dafb;
+.card-3 {
+    @apply bg-blue-50 text-black shadow-lg flex flex-col overflow-auto break-words rounded-md;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(components/img/movie-poster.jpg);
+}
+
+input, button {
+    outline: none !important;
+}
+
+.search-icon {
+    bottom: 6px;
+    right: 10px;
+}
+
+.w-90vw {
+    width: 90vw;
 }
