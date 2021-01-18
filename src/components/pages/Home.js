@@ -16,6 +16,17 @@ const Home = () => {
   const [nomination, setNomination] = useState([]);
 
   useEffect(() => {
+    // loop through nomination list
+    nomination.forEach(nom => console.log(nom.title))
+    // if nominated is in nomination and btn isn't disabled, disable it
+    const movieContainer = document.getElementById('movie-container');
+    const div = movieContainer.querySelectorAll('div.card-2');
+    let movieTitle = [];
+    div.forEach(mov => {
+      movieTitle.push(mov.lastChild.childNodes[0].textContent)
+    })
+    console.log(movieTitle);
+
     if (omdbMovies !== null) {
       if (omdbMovies.Search) {
         setResults(omdbMovies.Search)
@@ -28,16 +39,17 @@ const Home = () => {
         })*/
       }
     }
+    //console.log('length of nomination', nomination.length)
+  }, [omdbMovies, nomination])
+
+  useEffect(()=>{
     if (nomination.length === 5) {
       Swal.fire({
         icon: 'info',
         text: "You've added 5 nominations"
       })
-    } else if (nomination.length < 5) {
-      console.log(true)
     }
-    //console.log('length of nomination', nomination.length)
-  }, [omdbMovies, nomination])
+  })
 
   const onKeyUp = (e) => {
     e.preventDefault();
@@ -62,8 +74,8 @@ const Home = () => {
       imdbId: e.target.id
     }
     if (nomination.length < 5) {
-      // window.localStorage.setItem("nominatedMovies",JSON.stringify(nomination))
       setNomination(nomination => [...nomination, search])
+      window.localStorage.setItem("nominatedMovies",JSON.stringify(nomination))
     }
     if (nomination.length === 5) {
       e.target.disabled = false;
@@ -81,8 +93,10 @@ const Home = () => {
     console.log(e.target.dataset.key)*/
     let identifier = e.target.dataset.key;
     console.log(identifier)
-    document.getElementById(identifier).disabled = false;
-    document.getElementById(identifier).classList.remove('text-gray-400')
+    if (document.getElementById(identifier)) {
+      document.getElementById(identifier).disabled = false;
+      document.getElementById(identifier).classList.remove('text-gray-400')
+    }
     /*console.log(document.getElementById(identifier))*/
     let removed = nomination.splice(parseInt(position), 1)
     let rem = removed.map(rem => rem.title)
@@ -90,7 +104,8 @@ const Home = () => {
       icon: 'info',
       text: `"${rem}" has been removed`
     })
-    setNomination(nomination => nomination.filter(nom => nom !== [e.target.parentElement.parentElement.id]))
+    console.log(e.target.parentElement.childNodes[0].textContent)
+    setNomination(nomination.filter(nom => nom.title !== e.target.parentElement.childNodes[0].textContent))
 
   }
 
@@ -121,7 +136,7 @@ const Home = () => {
               <div className="flex justify-center items-center h-full w-90vw ">
                 <Spinner/>
               </div>) :
-            (<div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-center mt-5">
+            (<div id="movie-container" className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-center mt-5">
               {
                 results && results.map((movie) => (
                   <div key={movie.imdbID} className="card-2 flex flex-row">
@@ -133,7 +148,7 @@ const Home = () => {
                       <p className="my-2">{movie.Year}</p>
                       <div>
                         <button id={movie.imdbID}
-                                className="bg-green-200 shadow-lg p-2 rounded-lg nominateBtn"
+                                className="bg-green-200 shadow-lg p-2 rounded-lg nominateBtn animate-pulse"
                                 onClick={nominateClick}>Nominate
                         </button>
                       </div>

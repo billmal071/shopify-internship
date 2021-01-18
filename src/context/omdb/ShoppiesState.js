@@ -16,7 +16,7 @@ const ShoppiesState = props => {
     setLoading()
 
     try {
-      const res = await fetch(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=${movie}&type=movie`)
+      const res = await fetch(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=${movie}&type=movie`)
       const data = await res.json();
       dispatch({
         type: GET_MOVIES,
